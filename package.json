@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/brhestir/notation/issues"
   },
-  "homepage": "https://github.com/brhestir/notation#readme"
+  "homepage": "https://github.com/brhestir/notation#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
