@@ -1,10 +1,19 @@
+// includes
 const express = require(`express`);
 const path = require(`path`);
+const fs = require(`fs`);
+// https://github.com/uuidjs/uuid
+// Call with `uuidv4();` returns something akin to:
+// 0818bab7-a1a9-44da-ab52-d3fa89a6461f
+const { v4: uuidv4 } = require(`uuid`);
 
+// Main express.js object instance
 const app = express();
 
+// The port to listen on
 const PORT = process.env.PORT || 8080;
 
+// Express.js middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -23,15 +32,16 @@ app.get(`/notes`, (req, res) => {
 
 // GET `/api/notes`
 app.get(`/api/notes`, (req, res) => {
-    // Should read the `db.json` file and return all saved notes as JSON
-    
-
+    // Should read the `db.json` file and
+    // return all saved notes as JSON
+    res.sendFile(path.join(__dirname, `db/db.json`));
 });
 
 // app.get * route has to be at the bottom
 app.get(`*`, (req, res) => {
     // Should return the 'index.html' file.
-    res.sendFile(path.join(__dirname, 'public/', "/index.html"));
+    res.sendFile(
+        path.join(__dirname, `public/`, `/index.html`));
 });
 
 // POST `/api/notes`
