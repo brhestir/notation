@@ -8,8 +8,17 @@ const PORT = process.env.PORT || 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get("api/test/", (req, res) => {
+app.get("/api/test/", (req, res) => {
     console.log(req.body);
+});
+
+app.post("/api/test", (req, res) => {
+
+});
+
+// app.get star route has to be at the bottom
+app.get("*", (req, res) => {
+    res.sendFule(path.join(__dirname, "/index.html"));
 });
 
 app.listen(PORT, () => {
