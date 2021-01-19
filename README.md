@@ -1,2 +1,2 @@
 # notation
-Notable notes
+A repository for notable notes
