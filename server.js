@@ -18,7 +18,7 @@ app.post("/api/test", (req, res) => {
 
 // app.get star route has to be at the bottom
 app.get("*", (req, res) => {
-    res.sendFule(path.join(__dirname, "/index.html"));
+    res.sendFile(path.join(__dirname, "/index.html"));
 });
 
 app.listen(PORT, () => {
