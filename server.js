@@ -37,12 +37,7 @@ app.get(`/api/notes`, (req, res) => {
     res.sendFile(path.join(__dirname, `db/db.json`));
 });
 
-// app.get * route has to be at the bottom
-app.get(`*`, (req, res) => {
-    // Should return the 'index.html' file.
-    res.sendFile(
-        path.join(__dirname, `public/`, `/index.html`));
-});
+
 
 // POST `/api/notes`
 // Should receive a new note to save on the request body,
@@ -173,6 +168,30 @@ app.delete(`/api/notes/:id`, (req, res) => {
 
         
     });
+});
+
+app.get(`/assets/js/index.js`, (req, res) => {
+    res.sendFile(path.join(__dirname, `public/assets/js/`, `index.js`), (err) => {
+        if (err) {
+            throw err;
+            console.log(err);
+        } else {
+            console.log("[+] Serving ./public/assets/js/index.js");
+        }
+    });
+})
+// app.get * route has to be at the bottom
+app.get(`*`, (req, res) => {
+    // Should return the 'index.html' file.
+    res.sendFile(path.join(__dirname, `public/`, `index.html`), (err) => {
+        if (err) {
+            throw err;
+            console.log(err);
+        } else {
+            console.log("[+] Serving ./public/index.html");
+        }
+    });
+
 });
 
 app.listen(PORT, () => {
