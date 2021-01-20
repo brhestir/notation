@@ -48,8 +48,46 @@ app.get(`*`, (req, res) => {
 // Should receive a new note to save on the request body,
 // add it to the `db.json` file, and then
 // return the new note to the client.
-app.post(`api/notes`, (req, res) => {
+app.post(`/api/notes`, (req, res) => {
+    let dbFile = "";
+    let reqJson = req.body;
+        
+    // Read db/db.json, parse it and log.
+    fs.readFile(path.join(__dirname, `db/db.json`), `utf8`, (err, data) => {
+        if (err) throw err;
+        dbFile = JSON.parse(data);  //dbFile is now an object.
+        
+        reqJson.uuid = uuidv4();    // assign a uuid to the reqJson
+        dbFile.push(reqJson);  // appends req.body json
+        
+        // Parse the dbFile object, check for missing id keys and add if necessary
+        for (const objEntry of dbFile) {
+            if( objEntry.hasOwnProperty('uuid') ) {
+                console.log(objEntry);
+            }
+            else {  // uuid property missing? add a uuid then.
+                console.log(`[!] uuid missing, adding uuid...`);
+                objEntry.uuid = uuidv4();
+                console.log(objEntry);
+            }
+        }
+        
+        // Display the dbFile to be written
+        console.log(`[i] dbFile contents:\n`);
+        console.log(dbFile);
+                
+        // Write the updated data to the server-side db.json file
+        fs.writeFile(
+            path.join(__dirname, `db/db.json`),
+            JSON.stringify(dbFile),
+            `utf8`,
+            (err) => {
+                if (err) throw err;
+                console.log(`[+] wFile success: db.json`);
+            }
+        );
 
+    });
 });
 
 // DELETE `/api/notes/:id`
