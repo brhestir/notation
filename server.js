@@ -100,7 +100,79 @@ app.post(`/api/notes`, (req, res) => {
 // - remove the note with the given `id` property, and then
 // - rewrite the notes to the `db.json` file.
 app.delete(`/api/notes/:id`, (req, res) => {
+    // src: https://expressjs.com/en/guide/routing.html
+    // ROUTE PARAMETERS `/:id` are named URL segments used to store values
+    // in the URL.  These values are stored in the req.params object.
+    // Route path: /users/:userID/books/:bookId
+    // Request URL: http://localhost:3000/users/34/books/8989
+    // req.params: `{ "userID": "34", "bookId": "8989" }
+    req.params.id
 
+
+    let dbFile = "";
+    dbFileModified = new Array();    // Object to store updated dbFile sans deleted element
+    let reqJson = req.body;
+
+        
+    // Read db/db.json, parse it and log.
+    fs.readFile(path.join(__dirname, `db/db.json`), `utf8`, (err, data) => {
+        if (err) throw err;
+        
+        dbFile = JSON.parse(data);  // dbFile is now an object.
+        
+        
+        //reqJson.uuid = uuidv4();    // assign a uuid to the reqJson
+        //dbFile.push(reqJson);  // appends req.body json
+        
+        // Parse the dbFile object, check for missing id keys and add if necessary
+
+        let dbFileDeleteIndex = null;
+        // https://flaviocopes.com/how-to-get-index-in-for-of-loop/
+        for (const [index, objEntry] of dbFile.entries() ) {
+            if( objEntry.hasOwnProperty('uuid') ) {
+                if( objEntry.uuid === req.params.id ) {
+                    console.log(`[+] uuid to delete FOUND`);
+                    dbFileDeleteIndex = index;
+                } else {
+                    console.log(`[.] uuid to delete does not match, pushing...`);
+                    dbFileModified.push(objEntry);  // push non-matching object to object-to-write
+                }
+            }
+        }
+
+        // If we got a DELETE ID MATCH, then we have things to update
+        if (dbFileDeleteIndex !== null) {
+            console.log(`[!] delete index was STORED, is: ${dbFileDeleteIndex}`);
+
+            // Display the dbFile to be written
+            console.log(`[i] dbFileModified contents:\n`);
+            console.log(dbFileModified);
+                    
+            // Write the updated data to the server-side db.json file
+            fs.writeFile(
+                path.join(__dirname, `db/db.json`),
+                JSON.stringify(dbFileModified),
+                `utf8`,
+                (err) => {
+                    if (err) throw err;
+                    console.log(`[+] wFile success: db.json`);
+                }
+            );
+
+            // Close out the POST request w/ response.
+            res.send("DELETE success");
+
+        } 
+        else {    // If there was NO MATCH then nothing needs to change.
+            console.log(`[e] delete index NOT FOUND`);
+            // Close out the POST request w/ response.
+            res.send(`DELETE UUID matched no records`);
+        }
+        
+        
+
+        
+    });
 });
 
 app.listen(PORT, () => {
