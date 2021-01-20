@@ -169,6 +169,20 @@ app.get(`/assets/js/index.js`, (req, res) => {
     });
 })
 
+// Required for heroku
+app.get("/", function(req, res) {
+    //res.json(path.join(__dirname, "public/index.html"));
+    // Should return the 'index.html' file.
+    res.sendFile(path.join(__dirname, `public/`, `index.html`), (err) => {
+        if (err) {
+            throw err;
+            console.log(err);
+        } else {
+            console.log("[+] Serving ./public/index.html");
+        }
+    });
+});
+
 // app.get * route has to be at the bottom
 app.get(`*`, (req, res) => {
     // Should return the 'index.html' file.

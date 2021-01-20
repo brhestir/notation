@@ -4,7 +4,6 @@
   "description": "A repository for notable notes",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "repository": {
@@ -12,8 +11,8 @@
     "url": "git+https://github.com/brhestir/notation.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Brian Hestir",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/brhestir/notation/issues"
   },
