@@ -37,8 +37,6 @@ app.get(`/api/notes`, (req, res) => {
     res.sendFile(path.join(__dirname, `db/db.json`));
 });
 
-
-
 // POST `/api/notes`
 // Should receive a new note to save on the request body,
 // add it to the `db.json` file, and then
@@ -101,26 +99,18 @@ app.delete(`/api/notes/:id`, (req, res) => {
     // Route path: /users/:userID/books/:bookId
     // Request URL: http://localhost:3000/users/34/books/8989
     // req.params: `{ "userID": "34", "bookId": "8989" }
-    req.params.id
-
 
     let dbFile = "";
     dbFileModified = new Array();    // Object to store updated dbFile sans deleted element
     let reqJson = req.body;
 
-        
     // Read db/db.json, parse it and log.
     fs.readFile(path.join(__dirname, `db/db.json`), `utf8`, (err, data) => {
         if (err) throw err;
         
         dbFile = JSON.parse(data);  // dbFile is now an object.
         
-        
-        //reqJson.id = uuidv4();    // assign a uuid to the reqJson
-        //dbFile.push(reqJson);  // appends req.body json
-        
         // Parse the dbFile object, check for missing id keys and add if necessary
-
         let dbFileDeleteIndex = null;
         // https://flaviocopes.com/how-to-get-index-in-for-of-loop/
         for (const [index, objEntry] of dbFile.entries() ) {
@@ -164,12 +154,10 @@ app.delete(`/api/notes/:id`, (req, res) => {
             res.send(`DELETE UUID matched no records`);
         }
         
-        
-
-        
     });
 });
 
+// This route allows the existing js code to load correctly
 app.get(`/assets/js/index.js`, (req, res) => {
     res.sendFile(path.join(__dirname, `public/assets/js/`, `index.js`), (err) => {
         if (err) {
@@ -180,6 +168,7 @@ app.get(`/assets/js/index.js`, (req, res) => {
         }
     });
 })
+
 // app.get * route has to be at the bottom
 app.get(`*`, (req, res) => {
     // Should return the 'index.html' file.
