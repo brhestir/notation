@@ -87,6 +87,8 @@ app.post(`/api/notes`, (req, res) => {
             }
         );
 
+        // Close out the POST request w/ response.
+        res.send(req.body);
     });
 });
 
