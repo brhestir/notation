@@ -57,17 +57,17 @@ app.post(`/api/notes`, (req, res) => {
         if (err) throw err;
         dbFile = JSON.parse(data);  //dbFile is now an object.
         
-        reqJson.uuid = uuidv4();    // assign a uuid to the reqJson
+        reqJson.id = uuidv4();    // assign a uuid to the reqJson
         dbFile.push(reqJson);  // appends req.body json
         
         // Parse the dbFile object, check for missing id keys and add if necessary
         for (const objEntry of dbFile) {
-            if( objEntry.hasOwnProperty('uuid') ) {
+            if( objEntry.hasOwnProperty('id') ) {
                 console.log(objEntry);
             }
-            else {  // uuid property missing? add a uuid then.
-                console.log(`[!] uuid missing, adding uuid...`);
-                objEntry.uuid = uuidv4();
+            else {  // id property missing? add a uuid then.
+                console.log(`[!] id missing, adding uuid...`);
+                objEntry.id = uuidv4();
                 console.log(objEntry);
             }
         }
@@ -121,7 +121,7 @@ app.delete(`/api/notes/:id`, (req, res) => {
         dbFile = JSON.parse(data);  // dbFile is now an object.
         
         
-        //reqJson.uuid = uuidv4();    // assign a uuid to the reqJson
+        //reqJson.id = uuidv4();    // assign a uuid to the reqJson
         //dbFile.push(reqJson);  // appends req.body json
         
         // Parse the dbFile object, check for missing id keys and add if necessary
@@ -129,12 +129,12 @@ app.delete(`/api/notes/:id`, (req, res) => {
         let dbFileDeleteIndex = null;
         // https://flaviocopes.com/how-to-get-index-in-for-of-loop/
         for (const [index, objEntry] of dbFile.entries() ) {
-            if( objEntry.hasOwnProperty('uuid') ) {
-                if( objEntry.uuid === req.params.id ) {
-                    console.log(`[+] uuid to delete FOUND`);
+            if( objEntry.hasOwnProperty('id') ) {
+                if( objEntry.id === req.params.id ) {
+                    console.log(`[+] id to delete FOUND`);
                     dbFileDeleteIndex = index;
                 } else {
-                    console.log(`[.] uuid to delete does not match, pushing...`);
+                    console.log(`[.] id to delete does not match, pushing...`);
                     dbFileModified.push(objEntry);  // push non-matching object to object-to-write
                 }
             }
